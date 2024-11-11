@@ -51,25 +51,22 @@ jobs:
           ref: main
           path: main-branch
 
-      - name: Run felis diff on the schema files
+      - name: Run schema comparison with deepdiff
         run: |
           cd $GITHUB_WORKSPACE
           for file in ${{ env.CHANGED_FILES }}; do
-            echo "Schema diff for $file:"
+            echo "Comparing $file:"
             MAIN_FILE=main-branch/${{ env.SCHEMA_DIR }}/$file
             CURRENT_FILE=current-ref/${{ env.SCHEMA_DIR }}/$file
-            felis diff $MAIN_FILE $CURRENT_FILE
+            felis diff -c deepdiff $MAIN_FILE $CURRENT_FILE
           done
 
-      - name: Run felis diff of schema file against database
+      - name: Run schema comparison with alembic
         run: |
           cd $GITHUB_WORKSPACE
           for file in ${{ env.CHANGED_FILES }}; do
-            echo "Database diff for $file:"
+            echo "Comparing $file:"
             MAIN_FILE=main-branch/${{ env.SCHEMA_DIR }}/$file
-            DB_URL=sqlite:///$(basename ${MAIN_FILE%.yaml}).db
-            felis create $MAIN_FILE --engine-url $DB_URL
             CURRENT_FILE=current-ref/${{ env.SCHEMA_DIR }}/$file
-            echo "Comparing $DB_URL to $CURRENT_FILE"
-            felis diff --engine-url $DB_URL $CURRENT_FILE
+            felis diff -c alembic $MAIN_FILE $CURRENT_FILE
           done
