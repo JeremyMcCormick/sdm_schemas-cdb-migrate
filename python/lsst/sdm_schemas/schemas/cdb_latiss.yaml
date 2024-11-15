@@ -1295,4 +1295,5 @@ tables:
     ivoa:unit: pixel
   - name: test_cdb_migrate
     datatype: string
+    length: 256
     description: Test cdb migration by adding column
