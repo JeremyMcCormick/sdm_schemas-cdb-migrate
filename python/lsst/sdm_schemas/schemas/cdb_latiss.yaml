@@ -1294,6 +1294,7 @@ tables:
     description: Maximum distance of an unmasked pixel to its nearest model PSF star.
     ivoa:unit: pixel
   - name: test_cdb_migrate
+    "@id": "#ccdvisit1_quicklook.test_cdb_migrate"
     datatype: string
     length: 256
     description: Test cdb migration by adding column
